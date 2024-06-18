@@ -31,7 +31,7 @@ module.exports.addToCart = (req, res, next) => {
   // const userId = req.userId; // from verifyUser.js
 
   const productId = req.params.productId;
-  console.log(productId + "   productId");
+  // console.log(productId + "   productId");
   const userId = req.userId; // Assuming the user ID is stored in req.user
   // console.log(req.userId + "    userId");
   // Find the product by ID to get its price
@@ -70,7 +70,7 @@ module.exports.addToCart = (req, res, next) => {
         return cart.save();
       })
       .then((updatedCart) => {
-        return updatedCart.populate("items.productId").execPopulate();
+        return cartModel.findById(updatedCart._id).populate('items.productId').exec();
       })
       .then((populatedCart) => {
         res
