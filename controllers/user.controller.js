@@ -18,8 +18,13 @@ module.exports.getCarts = (req, res, next) => {
   const userId = req.userId;
   cartModel
     .findOne({ user: userId })
-    .then((lists) => {
-      res.status(200).json(lists);
+    .then((updatedCart) => {
+      return cartModel.findById(updatedCart._id).populate('items.productId').exec();
+    })
+    .then((populatedCart) => {
+      res
+        .status(200)
+        .json({ message: "Product added to cart", cart: populatedCart });
     })
     .catch((err) => {
       console.log("Error to fetch the data");
